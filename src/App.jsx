@@ -1,11 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./components/Home.jsx";
-import HomeNotLogined from "./components/HomeNotLogined.jsx";
-import ProtectedRoute from "./protectedRoute.jsx";
-import SignIn from "./components/SignIn.jsx";
-import SignUp from "./components/SignUp.jsx";
 import axios from "./axios.jsx";
-import { Setting } from "./components/Setting.jsx";
+
+// PAGES
+import Home from "./pages/Home/Home.jsx";
+import HomeNotLogined from "./pages/Home_unknown/HomeNotLogined.jsx";
+import ProtectedRoute from "./protectedRoute.jsx";
+import SignIn from "./pages/SignIn/SignIn.jsx";
+import SignUp from "./pages/SignUp/SignUp.jsx";
+import Setting from "./pages/Settings/Setting.jsx";
+
 
 
 axios.defaults.withCredentials = true;
@@ -39,6 +42,8 @@ function App() {
 
           {/* settings route */}
             <Route path="/settings" element={<Setting/>} />
+
+
 
         </Routes>
       </Router>

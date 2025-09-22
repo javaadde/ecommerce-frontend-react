@@ -1,11 +1,14 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import showNotification from "../notification.mjs";
-import axios from "../axios.jsx";
+import axios from "../../axios";
+import { useNavigate } from "react-router-dom";
 
 
 function SignIn() {
+
+  const navigate = useNavigate()
+
   const schema = yup.object().shape({
     username: yup.string().required(),
     password: yup.string().min(6).required(),
@@ -16,11 +19,10 @@ function SignIn() {
   });
 
   const formSubmit =  async(data) => {
-      showNotification('form submitted')
     console.log(data);
 
    axios.post('/signIn',data, {withCredentials:true})
-   .then( (res) => console.log(res))
+   .then( (res) => navigate('/'))
    .catch( (err) => console.log(err))
    
   };  
@@ -89,11 +91,12 @@ function SignIn() {
         <div className="mt-6 text-center font-comfortaa">
           <p className="text-sm text-gray-600">
             Don't have an account?
-            <a href="" className="text-black hover:underline font-medium">
+            <a href="/signUp" className="text-black hover:underline font-bold ml-1">
               Sign up here
             </a>
           </p>
         </div>
+        
       </div>
     </div>
   );
