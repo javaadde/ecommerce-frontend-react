@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "../../axios";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function Setting() {
   const navigate = useNavigate();
@@ -14,33 +15,27 @@ function Setting() {
     }
   };
 
-  const [name,setName] = useState('your name')
-  const [email,setEmail] = useState()
+  const [name, setName] = useState("your name");
+  const [email, setEmail] = useState();
 
-  useEffect( () => {
-     axios.get('/details')
-     .then( (res) => {
-       const user = res.data.user;
-       console.log(user);
-       
-       setName(user.username)
-       setEmail(user.email)
-     })
+  useEffect(() => {
+    axios.get("/details").then((res) => {
+      const user = res.data.user;
      
-  },[])
 
+      setName(user.username);
+      setEmail(user.email);
+    });
+  }, []);
 
   const handleSave = () => {
-     alert('it will update soon')
-  }
-
+    alert("it will update soon");
+  };
 
   return (
     <>
       <div className="bg-white min-h-screen">
-        <button
-          className="bg-gray-500 text-white w-10 h-10 rounded-full z-10 fixed left-5 top-4"
-        >
+        <button className="bg-gray-500 text-white w-10 h-10 rounded-full z-10 fixed left-5 top-4">
           <i className="fa-solid fa-arrow-left"></i>
         </button>
 
@@ -53,9 +48,7 @@ function Setting() {
                 <i className="fa-regular fa-user"></i>
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-black">
-                  My Profile
-                </h1>
+                <h1 className="text-3xl font-bold text-black">My Profile</h1>
                 <p className="text-gray-600">Manage your account information</p>
               </div>
             </div>
@@ -98,9 +91,10 @@ function Setting() {
 
               {/* <!-- Email Address --> */}
               <div>
-                <label 
-                onChange={(e) => setEmail(e.target.value)}
-                className="block text-sm font-semibold text-gray-500 mb-2">
+                <label
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="block text-sm font-semibold text-gray-500 mb-2"
+                >
                   Email Address
                 </label>
                 <input
@@ -114,10 +108,7 @@ function Setting() {
 
               <div className="flex">
                 <div className="flex justify-start w-1/2">
-                  <button
-                    className="cursor-pointer font-bold underline"
-                   
-                  >
+                  <button className="cursor-pointer font-bold underline">
                     change password
                   </button>
                 </div>
@@ -135,17 +126,14 @@ function Setting() {
 
             {/* <!-- Orders Button --> */}
             <div className="mb-4 font-comfortaa">
-              <button
-               
-                className="w-full flex items-center justify-center space-x-3 px-6 py-4 bg-black text-white rounded-xl  border-1 cursor-pointer transition-colors font-semibold hover:bg-gray-300 hover:text-black"
-              >
+              <Link to="/orders">
+              <button className="w-full flex items-center justify-center space-x-3 px-6 py-4 bg-black text-white rounded-xl  border-1 cursor-pointer transition-colors font-semibold hover:bg-gray-300 hover:text-black">
                 <i className="fa-solid fa-bag-shopping"></i>
                 <span>View Orders</span>
               </button>
+              </Link>
             </div>
           </div>
-
-         
         </div>
 
         <button

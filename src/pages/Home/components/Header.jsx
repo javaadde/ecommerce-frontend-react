@@ -27,7 +27,7 @@ function Header(){
             {/* <!-- Navigation --> */}
             <nav className="hidden md:flex space-x-8">
               <a
-                href="http://localhost:5000/products"
+                href="/products"
                 className="text-black hover:text-gray-600 px-3 py-2 text-sm font-comfortaa font-medium transition-colors duration-200"
               >
                 Products
@@ -48,9 +48,11 @@ function Header(){
 
             {/* <!-- Auth Buttons --> */}
             <div className="flex items-center space-x-4 gap-5">
+              <Link to="/cart">
               <button className="font-bold text-2xl hover:text-gray-700 cursor-pointer">
                 <i className="fa-solid fa-cart-shopping"></i>
               </button>
+              </Link>
               <Link to="/settings">
               <button className="text-2xl hover:text-gray-700 cursor-pointer">
                 <i className="fa-solid fa-circle-user"></i>
@@ -80,23 +82,23 @@ function Header(){
 
         <div className="w-full mt-20 flex items-center justify-center font-comfortaa">
           <ul className="text-black w-full">
+            {/* <li className="p-2 cursor-pointer bg-white hover:bg-black hover:text-white hover:border-black text-center border-y py-3 w-full transition-[0.5s] ease-in">
+              <a href="/"></a>Home
+            </li>         */}
             <li className="p-2 cursor-pointer bg-white hover:bg-black hover:text-white hover:border-black text-center border-y py-3 w-full transition-[0.5s] ease-in">
-              <a href=""></a>Home
-            </li>        
-            <li className="p-2 cursor-pointer bg-white hover:bg-black hover:text-white hover:border-black text-center border-y py-3 w-full transition-[0.5s] ease-in">
-              <a href="">Products</a>
+              <Link to="/products">Products</Link>
             </li>        
             <li className="p-2 cursor-pointer bg-white hover:bg-black hover:text-white hover:border-black text-center border-y py-3 w-full transition-[0.5s] ease-in">
               <a href="">Categories</a>
             </li>        
             <li className="p-2 cursor-pointer bg-white hover:bg-black hover:text-white hover:border-black text-center border-y py-3 w-full transition-[0.5s] ease-in">
-              <a href="">Orders</a>
+              <Link to="/orders">Orders</Link>
             </li>        
             <li className="p-2 cursor-pointer bg-white hover:bg-black hover:text-white hover:border-black text-center border-y py-3 w-full transition-[0.5s] ease-in">
-              <a href="">Cart</a>
+              <Link to="/cart">Cart</Link>
             </li>        
             <li className="p-2 cursor-pointer bg-white hover:bg-black hover:text-white hover:border-black text-center border-y py-3 w-full transition-[0.5s] ease-in">
-              <a href="">Settings</a>
+              <Link to="/settings">Settings</Link>
             </li>        
           </ul>
         </div>
