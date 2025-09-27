@@ -6,20 +6,36 @@ import {
 } from "react-router-dom";
 import axios from "./axios.jsx";
 
-// PAGES
-import Home from "./pages/Home/Home.jsx";
-import HomeNotLogined from "./pages/Home_unknown/HomeNotLogined.jsx";
-import ProtectedRoute from "./protectedRoute.jsx";
-import SignIn from "./pages/SignIn/SignIn.jsx";
-import SignUp from "./pages/SignUp/SignUp.jsx";
-import Setting from "./pages/Settings/Setting.jsx";
-import Cart from "./pages/Cart/Cart.jsx";
-import Products from "./pages/Products/Products.jsx";
-import Orders from "./pages/Orders/Orders.jsx";
-import OrderDetails from "./pages/Orders/OrderDetails.jsx";
+// PROTECTING HANDLERS
+import ProtectedToAdmin from "./ProtectedToAdmin.jsx";
+import ProtectedRoute from "./ProtectedRoute.jsx";
+
+//  PAGES OF USERS
+import Home from "./pages/user/Home/Home.jsx";
+import HomeNotLogined from "./pages/user/Home_unknown/HomeNotLogined.jsx";
+import SignIn from "./pages/user/SignIn/SignIn.jsx";
+import SignUp from "./pages/user/SignUp/SignUp.jsx";
+import Setting from "./pages/user/Settings/Setting.jsx";
+import Cart from "./pages/user/Cart/Cart.jsx";
+import Products from "./pages/user/Products/Products.jsx";
+import Orders from "./pages/user/Orders/Orders.jsx";
+import OrderDetails from "./pages/user/Orders/OrderDetails.jsx";
+
+// PAGES OF ERRORS
+import NotFoundPage from "./pages/error/404.jsx";
+import UnOtherizedPage from "./pages/error/401.jsx";
+
+// ADMIN PAGES
+import SignInAdmin from "./pages/admin/SignIn/SignIn.jsx";
+import AdminHome from "./pages/admin/Home/Home.jsx";
+import AdminProducts from "./pages/admin/Products/Products.jsx";
+import AdminOrders from "./pages/admin/Orders/Orders.jsx";
+import OrderDetailsForAdmin from "./pages/admin/Orders/OrderDetails.jsx";
+import UsersAdmin from "./pages/admin/Users/Users.jsx";
+import Category from "./pages/admin/Categories/Category.jsx";
 
 //CONTEXTS
-import { UpdaterCart } from "./pages/Cart/components/Items.jsx";
+import { UpdaterCart } from "./pages/user/Cart/components/Items.jsx";
 import { useContext } from "react";
 
 axios.defaults.withCredentials = true;
@@ -29,50 +45,118 @@ function App() {
 
   return (
     <>
-
       <UpdaterCart.Provider value={updater}>
-          <Router>
-            <Routes>
-              {/* Home route */}
-              <Route
-                path="/"
-                element={
-                  <ProtectedRoute>
-                    <Home />
-                  </ProtectedRoute>
-                }
-              />
+        <Router>
+          <Routes>
+            {/* Home route */}
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Home />
+                </ProtectedRoute>
+              }
+            />
 
-              {/* unkown user home route */}
-              <Route path="/unknown" element={<HomeNotLogined />} />
+            {/* unkown user home route */}
+            <Route path="/unknown" element={<HomeNotLogined />} />
 
-              {/* Login route */}
-              <Route path="/login" element={<SignIn />} />
+            {/* Login route */}
+            <Route path="/login" element={<SignIn />} />
 
-              {/* signup route */}
-              <Route path="/signUp" element={<SignUp />} />
+            {/* signup route */}
+            <Route path="/signUp" element={<SignUp />} />
 
-              {/* settings route */}
-              <Route path="/settings" element={<Setting />} />
+            {/* settings route */}
+            <Route path="/settings" element={<Setting />} />
 
-              {/* cart route */}
-              <Route path="/cart" element={<Cart />} />
+            {/* cart route */}
+            <Route path="/cart" element={<Cart />} />
 
-              {/* cart route */}
-              <Route path="/products" element={<Products />} />
+            {/* cart route */}
+            <Route path="/products" element={<Products />} />
 
-              {/* ORDERS route */}
-              <Route path="/orders" element={<Orders />} />
+            {/* ORDERS route */}
+            <Route path="/orders" element={<Orders />} />
 
-              {/* ORDERS route */}
-              <Route
-                path="/order/details/:id"
-                element={<OrderDetails />}
-              />
-            </Routes>
-          </Router>
+            {/* ORDERS route */}
+            <Route path="/order/details/:id" element={<OrderDetails />} />
+
+            {/* Eroor Pages */}
+
+            {/* 404 route */}
+            <Route path="/404" element={<NotFoundPage />} />
+
+            {/* 401 route */}
+            <Route path="/401" element={<UnOtherizedPage />} />
+
+            {/* ADMIN PAGES */}
+
+            {/* none protected */}
+            <Route path="/admin/login" element={<SignInAdmin />} />
+
+            {/* protected */}
+            {/* home admin route */}
+
+            <Route
+              path="/admin"
+              element={
+                <ProtectedToAdmin>
+                  <AdminHome />
+                </ProtectedToAdmin>
+              }
+            />
+
+            <Route
+              path="/admin/products"
+              element={
+                <ProtectedToAdmin>
+                  <AdminProducts />
+                </ProtectedToAdmin>
+              }
+            />
+
+            <Route
+              path="/admin/orders"
+              element={
+                <ProtectedToAdmin>
+                  <AdminOrders />
+                </ProtectedToAdmin>
+              }
+            />
+
+            <Route
+              path="/admin/orders/:id"
+              element={
+                <ProtectedToAdmin>
+                  <OrderDetailsForAdmin />
+                </ProtectedToAdmin>
+              }
+            />
+
+            <Route
+              path="/admin/users"
+              element={
+                <ProtectedToAdmin>
+                  <UsersAdmin />
+                </ProtectedToAdmin>
+              }
+            />
+
+            <Route
+              path="/admin/categories"
+              element={
+                <ProtectedToAdmin>
+                  <Category />
+                </ProtectedToAdmin>
+              }
+            />
+
+            <Route path="*" element={<NotFoundPage />} />
+            
+          </Routes>
+        </Router>
       </UpdaterCart.Provider>
-
     </>
   );
 }

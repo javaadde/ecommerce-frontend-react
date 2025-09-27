@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "../../../axios";
+import axios from "../../../../axios";
 import Items from "./Items";
 import { Link } from "react-router-dom";
 import States from "./States";
@@ -11,6 +11,8 @@ function Main() {
     const fetchCart = async () => {
       axios.get("/cart").then((res) => {
         const items = res.data.items;
+        console.log(items);
+        
         if (items.length <= 0) {
           setIsEmpty(true);
         }
@@ -19,6 +21,7 @@ function Main() {
 
     fetchCart();
   }, []);
+
 
   return isEmpty ? (
     <>

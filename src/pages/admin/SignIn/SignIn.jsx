@@ -1,11 +1,11 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import axios from "../../axios";
+import axios from "../../../axios";
 import { useNavigate } from "react-router-dom";
 
 
-function SignIn() {
+function SignInAdmin() {
 
   const navigate = useNavigate()
   
@@ -15,6 +15,7 @@ function SignIn() {
     password: yup.string().min(6).required(),
   });
 
+
   const { register, handleSubmit } = useForm({
     resolver: yupResolver(schema),
   });
@@ -22,8 +23,8 @@ function SignIn() {
   const formSubmit =  async(data) => {
     console.log(data);
 
-   axios.post('/signIn',data, {withCredentials:true})
-   .then( (res) => navigate('/'))
+   axios.post('/admin/signIn',data, {withCredentials:true})
+   .then( (res) => navigate('/admin'))
    .catch( (err) => console.log(err))
    
   };  
@@ -103,4 +104,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default SignInAdmin;

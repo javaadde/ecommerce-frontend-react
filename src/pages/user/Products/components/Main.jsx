@@ -1,5 +1,5 @@
 import Pro from "./pro";
-import axios from "../../../axios";
+import axios from "../../../../axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -54,34 +54,25 @@ function Main() {
         {/* search by text */}
 
         <div className="w-[35%] lg:w-1/2 h-full flex lg:justify-start flex-row lg:ml-15 justify-center items-center">
+      
         <Link to="/">
-        <button className="text-2xl cursor-pointer px-4 ">
+        <button className="text-2xl cursor-pointer px-4 lg:hidden">
             <i className="fa-solid fa-house"></i>
         </button>
         </Link>
 
-        <div className="lg:flex md:flex hidden">
-
-
-        <Link to="/cart">
-        <button className="text-2xl cursor-pointer px-4">
-            <i className="fa-solid fa-cart-shopping"></i>
-        </button>
-        </Link>
-
-        <Link to="/settings">
-        <button className="text-2xl cursor-pointer px-4">
-            <i className="fa-solid fa-user-circle"></i>
-        </button>
-        </Link>
+        <Link to="/">
+        <div className="text-xl cursor-pointer px-4 hover:scale-105 hover:font-extrabold hidden lg:flex">
+            <h1 className="text-black">Home</h1>
         </div>
+        </Link>
 
         </div>
 
         {/* search by categories */}
 
         <div className="md:w-[60%] w-[30%] lg:w-1/2 h-full">
-          <div className="w-full h-full flex flex-row gap-4 py-8 justify-center px-10 items-center font-michroma">
+          <div className="w-full h-full text-xl flex flex-row gap-4 py-8 justify-center px-10 items-center font-michroma">
             <h2>Filter By Category&nbsp;:</h2>
 
             <select
@@ -94,8 +85,8 @@ function Main() {
             >
               <option value="">All</option>
               {allCategory.map((catg, index) => (
-                <option key={index} value={catg._id}>
-                  {catg._id}
+                <option key={index} value={catg.name}>
+                  {catg.name}
                 </option>
               ))}
             </select>

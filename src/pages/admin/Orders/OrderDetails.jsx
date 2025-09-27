@@ -1,50 +1,84 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import axios from "../../axios";
+import axios from "../../../axios";
+import { useState,useEffect } from "react";
+import showNotification from "../../../notification.mjs";
+import { useNavigate } from "react-router-dom";
 
-function OrderDetails() {
+function OrderorAdmin(){
   const { id } = useParams();
   const [order, setOrder] = useState([]);
   const [items, setItems] = useState([]);
-  const [status,setStatus] = useState()
+  const [status, setStatus] = useState("");
+
+ 
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     axios
       .get(`/order/${id}`)
       .then((res) => {
         const data = res.data;
+       
         setOrder(data);
         setItems(data.items);
+        setStatus(data.status)
       })
       .catch((err) => console.log(err));
-  }, [status]);
 
 
-  const cancellOreder = ()=>{
+  }, []);
 
-    if(confirm("are you sure to cancell")){
-     axios.patch(`/order/cancell/${id}`)
-     .then((res)=>{
-        console.log(res.data);
-        setStatus(res.data.updated)
-     })
-     .catch((err) => console.log(err))
+
+  const updateStatus = () => {
+      const updtValue = {status:status}
+      axios.put(`/admin/order/update/${id}`,updtValue)
+      .then((res) =>{
+         const data = res.data.Status;
+ 
+         showNotification("status changed to " + data)
+      })
+      .catch((err) => console.log(err))
+
     }
-  }
+
+
+    const deleteOrder = () => {
+
+        if(confirm("are you sure to delete")){
+
+            axios.delete(`/admin/order/delete/${id}`)
+            .then((res) => {
+               const message = res.data.msg;
+               
+               showNotification(message)
+     
+               setTimeout( ()=>{
+                navigate("/admin/orders")
+               },200)
+               
+            })
+            .catch(err=> console.log(err))
+        }
+
+    }
+  
+
+
 
   
   function getStatusColor(status) {
     switch (status) {
       case "delivered":
-        return "bg-green-100 text-green-800 px-3 py-1 rounded-full text-md font-medium capitalize";
+        return "bg-green-100 text-green-800 px-5 py-2 rounded-full text-md font-medium capitalize";
       case "shipped":
-        return "bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-md font-medium capitalize";
+        return "bg-blue-100 text-blue-800 px-5 py-2 rounded-full text-md font-medium capitalize";
       case "processing":
-        return "bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-md font-medium capitalize";
+        return "bg-yellow-100 text-yellow-800 px-5 py-2 rounded-full text-md font-medium capitalize";
       case "cancelled":
-        return "bg-red-100 text-red-800 px-3 py-1 rounded-full text-md font-medium capitalize";
+        return "bg-red-100 text-red-800 px-5 py-2 rounded-full text-md font-medium capitalize";
       default:
-        return "bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-md font-medium capitalize";
+        return "bg-gray-100 text-gray-800 px-5 py-2 rounded-full text-md font-medium capitalize";
     }
   }
 
@@ -101,7 +135,7 @@ function OrderDetails() {
                 </div>
               ))}
 
-              {/*  Order Summary & Details  */}
+              {/*  Order Summary &  */}
 
               <div className="lg:col-span-1 space-y-6 p-5">
                 {/*  Order Summary */}
@@ -113,7 +147,7 @@ function OrderDetails() {
                     <div className="flex justify-between">
                       <span className="text-dark-gray">Subtotal</span>
                       <span id="modalSubtotal" className="text-black">
-                        {order.total - 5.99}
+                       {order.total - 5.99}
                       </span>
                     </div>
                     <div className="flex justify-between">
@@ -161,31 +195,55 @@ function OrderDetails() {
                   </div>
                 </div>
 
+
                 {/* <!-- Order Status --> */}
                 <div className="bg-soft-gray rounded-xl p-4 px-8">
+
                   <h3 className="text-xl text-black mb-2">
                     Order Status
                   </h3>
-                  <span className={getStatusColor(order.status)} id="modalOrderStatus">{order.status}</span>
+
+                  <select 
+                  onChange={(e) => {setStatus(e.target.value)}}
+                  id="status-select"
+                  value={status}
+                 className={getStatusColor(status)}
+                // class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+              >
+                <option id="placed" value="placed" >Placed</option>
+                <option id="proccessing" value="processing">Processing</option>
+                <option id="shipped" value="shipped" >Shipped</option>
+                <option id="delivered" value="delivered">Delivered</option>
+                <option id="cancelled" value="cancelled" >Cancelled</option>
+              </select>
+
+
+              <button  
+              onClick={updateStatus}
+                className="px-6 py-2 ml-7 cursor-pointer bg-gray-200 text-black rounded-full hover:bg-dark-gray transition-colors font-medium"
+              >
+                Update Status
+              </button>
+
                 </div>
               </div>
             </div>
           </div>
 
           {/* Footer  */}
-          <div className="p-6 border-t-[2px] border-gray-100 flex justify-center space-x-3 ">
-            <button className="px-6 py-2 bg-black text-white rounded-lg hover:bg-dark-gray cursor-pointer transition-colors font-medium">
-              Track Order
+          <div
+          
+          className="p-6 border-t-[2px] border-gray-100 flex justify-center space-x-3 ">
+            <button 
+            onClick={deleteOrder}
+             className="px-6 py-2 bg-red-400 text-white rounded-lg hover:bg-dark-gray cursor-pointer transition-colors font-medium">
+              Delete Order
             </button>
           </div>
 
           <div className="p-6  border-gray-100 flex justify-end space-x-3">
             
-            <button
-            onClick={cancellOreder} 
-            className="px-6 cursor-pointer py-2 hover:bg-gray-400 font-xl underline font-bold rounded-2xl ">
-              Cancel Order
-            </button>
+          
           </div>
         </div>
       </section>
@@ -193,4 +251,5 @@ function OrderDetails() {
   );
 }
 
-export default OrderDetails;
+
+export default OrderorAdmin
