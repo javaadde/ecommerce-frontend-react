@@ -11,11 +11,11 @@ function SignIn() {
   
   
   const schema = yup.object().shape({
-    username: yup.string().required(),
-    password: yup.string().min(6).required(),
+    username: yup.string().required("please enter the username"),
+    password: yup.string().required("please enter the password").min(6,"your password is weak try to enter with atleast 6 charecters"),
   });
 
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit, formState:{errors:errors} } = useForm({
     resolver: yupResolver(schema),
   });
 
@@ -59,9 +59,14 @@ function SignIn() {
               name="username"
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all duration-200 bg-white text-black placeholder-gray-400"
               placeholder="Enter your Username"
-              required
+            
               {...register("username")}
             />
+             {errors.username && (
+                    <p className="text-red-500 text-sm">
+                      🚨 {errors.username.message}
+                    </p>
+                  )}
           </div>
 
           <div>
@@ -74,10 +79,14 @@ function SignIn() {
                 name="password"
                 className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all duration-200 bg-white text-black placeholder-gray-400"
                 placeholder="Enter your password"
-                required
+              
                 {...register("password")}
               />
-             
+              {errors.password && (
+                    <p className="text-red-500 text-sm">
+                      🚨 {errors.password.message}
+                    </p>
+                  )}
             </div>
           </div>
 

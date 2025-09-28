@@ -4,40 +4,35 @@ import * as yup from "yup";
 import axios from "../../../axios";
 import { useNavigate } from "react-router-dom";
 
-
 function SignInAdmin() {
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
-  
-  
   const schema = yup.object().shape({
-    username: yup.string().required(),
-    password: yup.string().min(6).required(),
+    username: yup.string().required("please enter the username"),
+    password: yup.string().required("please enter the password").min(6,"password is weak")
   });
 
-
-  const { register, handleSubmit } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: {errors:errors},
+  } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const formSubmit =  async(data) => {
+  const formSubmit = async (data) => {
     console.log(data);
 
-   axios.post('/admin/signIn',data, {withCredentials:true})
-   .then( (res) => navigate('/admin'))
-   .catch( (err) => console.log(err))
-   
-  };  
-
-
-    
-
-  
-
+    axios
+      .post("/admin/signIn", data, { withCredentials: true })
+      .then((res) => navigate("/admin"))
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div className="h-screen w-full flex items-center justify-center">
       <div className="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-md border border-gray-200">
+       
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-black mb-2 font-michroma">
             Wellcome Back
@@ -60,9 +55,14 @@ function SignInAdmin() {
               name="username"
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all duration-200 bg-white text-black placeholder-gray-400"
               placeholder="Enter your Username"
-              required
+             
               {...register("username")}
             />
+             {errors.username && (
+                    <p className="text-red-500 text-sm">
+                      🚨 {errors.username.message}
+                    </p>
+                  )}
           </div>
 
           <div>
@@ -75,10 +75,14 @@ function SignInAdmin() {
                 name="password"
                 className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all duration-200 bg-white text-black placeholder-gray-400"
                 placeholder="Enter your password"
-                required
+                
                 {...register("password")}
               />
-             
+               {errors.password && (
+                    <p className="text-red-500 text-sm">
+                      🚨 {errors.password.message}
+                    </p>
+                  )}
             </div>
           </div>
 
@@ -93,12 +97,14 @@ function SignInAdmin() {
         <div className="mt-6 text-center font-comfortaa">
           <p className="text-sm text-gray-600">
             Don't have an account?
-            <a href="/signUp" className="text-black hover:underline font-bold ml-1">
+            <a
+              href="/signUp"
+              className="text-black hover:underline font-bold ml-1"
+            >
               Sign up here
             </a>
           </p>
         </div>
-
       </div>
     </div>
   );

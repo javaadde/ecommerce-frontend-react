@@ -2,9 +2,8 @@ import axios from "../../../axios";
 import { useState, useEffect } from "react";
 import showNotification from "../../../notification.mjs";
 import { useForm } from "react-hook-form";
-import * as yup from "yup"
+import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
 
 function Category() {
   const [allCategory, setAllCtegory] = useState([]);
@@ -37,45 +36,48 @@ function Category() {
   }, [category, update]);
 
   const deleteCategory = (id) => {
-
-    if(confirm("are you sure it will delete all the product inside the category")){
-
-        axios
-          .delete(`/admin/category/delete/${id}`)
-          .then((res) => {
-            const message = res.data.message;
-            console.log(message);
-            showNotification(message);
-            setUpdate(update + 1);
-          })
-          .catch((err) => console.log(err));
-      };
+    if (
+      confirm("are you sure it will delete all the product inside the category")
+    ) {
+      axios
+        .delete(`/admin/category/delete/${id}`)
+        .then((res) => {
+          const message = res.data.message;
+          console.log(message);
+          showNotification(message);
+          setUpdate(update + 1);
+        })
+        .catch((err) => console.log(err));
     }
+  };
 
-  
-  
   const schema = yup.object().shape({
-    name:yup.string().required(),
-    discription:yup.string(),
-    url:yup.string().required()
-  })
+    name: yup.string().required("please add a name in it"),
+    discription: yup.string(),
+    url: yup.string().required("please add a url of the photo for recognition"),
+  });
 
-  const  {register,handleSubmit} = useForm({
-      resolver:yupResolver(schema)
-    })
-    
-    const createCategory = async (data) => {
-      const res = await axios.post("/admin/category/add",data);
-      const message = res.data.message;
-      showNotification(message)
-      setUpdate(update+1);
-    };
-  
+  const {
+    register,
+    handleSubmit,
+    formState: { errors: errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
+  const createCategory = async (data) => {
+    const res = await axios.post("/admin/category/add", data);
+    const message = res.data.message;
+    showNotification(message);
+    setUpdate(update + 1);
+  };
 
   return (
     <>
       <div className="min-h-screen w-full bg-gray-200 grid grid-cols-1 lg:grid-cols-2 space-x-5 px-7 py-7">
+
+        {/* showing products by category */}
+
         <div className="bg-gray-200 py-8 px-8 border-1 font-michroma border-white shadow-2xl rounded-2xl">
           <div className="h-[20%] w-full flex felx-row items-center justify-center">
             <h2>Filter By Category&nbsp;:&nbsp; &nbsp;</h2>
@@ -121,54 +123,74 @@ function Category() {
           </div>
         </div>
 
+        {/* form of the creating an category */}
+
         <div className="bg-gray-200 py-12 px-12 border-1 border-white shadow-2xl rounded-2xl font-comfortaa">
-          <div >
-
+          <div>
             <form
-             className="h-1/2 w-full flex flex-col gap-5 justify-center items-center"
-             onSubmit={handleSubmit(createCategory)}
-             action="" 
-
+              className="h-1/2 w-full flex flex-col gap-5 justify-center items-center"
+              onSubmit={handleSubmit(createCategory)}
             >
+              <div className="flex w-full space-x-2 justify-center">
+                <div className="w-full">
 
-              <div className="flex space-x-2 justify-center">
                 <input
-                  className="bg-gray-100 outline-1 rounded-xl px-7 py-3 w-1/2 "
+                  {...register("name")}
+                  className="bg-gray-100 outline-1 rounded-xl w-full px-7 py-3 "
                   placeholder="Category Name"
                   type="text"
-                  required
-                  {...register("name")}
                 />
-                <input
-                  className="bg-gray-100 outline-1 rounded-xl px-7 py-3 w-1/2 "
-                  placeholder="Discription"
-                  type="text"
-                  {...register("discription")}
-                />
+                {errors.name && (
+                  <p className="text-red-500 text-sm">
+                    🚨 {errors.name.message}
+                  </p>
+                )}
+
+                </div>
+
+                <div className="w-full ">
+                  <input
+                    className="bg-gray-100 outline-1 rounded-xl px-7 py-3 w-full "
+                    placeholder="Discription"
+                    type="text"
+                    {...register("discription")}
+                  />
+                  {errors.discription && (
+                    <p className="text-red-500 text-sm">
+                      🚨 {errors.discription.message}
+                    </p>
+                  )}
+                </div>
               </div>
 
-              <div className=" felx flex-row space-x-2 w-full items-center">
+              <div className=" felx flex-col gap-5 w-full items-center">
+
+                <div className="w-1/1">
+
                 <input
-                  className="bg-gray-100 outline-1 rounded-xl px-5 py-3 w-3/4 "
+                  className="bg-gray-100 outline-1 rounded-xl px-5 py-3 w-full"
                   placeholder="Image Url "
                   type="text"
-                  required
                   {...register("url")}
                 />
+                 {errors.url && (
+                    <p className="text-red-500 text-sm">
+                      🚨 {errors.url.message}
+                    </p>
+                  )}
+
+                </div>
 
                 <button
-                 type="submit"
-                 
-                  className="bg-black cursor-pointer py-3 px-5 rounded-xl w-1/5 text-white"
+                  type="submit"
+                  className="bg-black cursor-pointer py-3 px-5 rounded-xl w-full mt-5 text-white"
                 >
                   Create
                 </button>
+
               </div>
 
             </form>
-
-
-
           </div>
 
           <div className="h-1/2 w-full flex justify-center items-center gap-3 flex-wrap overflow-y-auto mt-15">

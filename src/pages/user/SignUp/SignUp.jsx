@@ -7,45 +7,48 @@ import showNotification from "../../../notification.mjs";
 import { useNavigate } from "react-router-dom";
 
 function SignUp() {
-
-    const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [available, setAvailable] = useState(false);
 
   const schema = yup.object().shape({
-    username: yup.string().min(4).required(),
-    password: yup.string().min(6).required(),
+    username: yup
+      .string()
+      .required("please enter the username")
+      .min(4, "the username will be more than 4 charecters"),
+    password: yup
+      .string()
+      .required("please enter the password")
+      .min(6, "your password is weak"),
     confirmPassword: yup
       .string()
-      .min(6)
-      .oneOf([yup.ref("password")], null)
-      .required(),
-    email: yup.string().email().required(),
+      .required("please enter your comfirmation password")
+      .min(6, "please make sure its same to the previous")
+      .oneOf([yup.ref("password")], null, "make sure this the same one"),
+    email: yup
+      .string()
+      .required("please enter the email")
+      .email("please make sure you entered the currect email"),
   });
 
-  const { register, handleSubmit } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors: errors },
+  } = useForm({
     resolver: yupResolver(schema),
   });
 
-
-
   const postData = (data) => {
+    axios.post("/signup", data).then((data) => {
+      if (data.status !== 200) {
+        showNotification("please ensure that everithing filled properly");
+      }
+      navigate("/");
+    });
 
-    axios.post('/signup', data)
-    .then( (data) => {
-       if(data.status !== 200){
-         showNotification("please ensure that everithing filled properly")
-       }
-       navigate('/')
-    })
-    
     console.log(data);
   };
-
-
-
-
-
 
   function fetchUserExists(value) {
     const obj = {
@@ -118,9 +121,11 @@ function SignUp() {
               type="email"
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-off-black focus:border-transparent outline-none transition-all duration-200 bg-white text-off-black placeholder-gray-400"
               placeholder="john.doe@example.com"
-              required
               {...register("email")}
             />
+            {errors.email && (
+              <p className="text-red-500 text-sm">🚨 {errors.email.message}</p>
+            )}
           </div>
 
           <div>
@@ -133,13 +138,21 @@ function SignUp() {
               type="text"
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-off-black focus:border-transparent outline-none transition-all duration-200 bg-white text-off-black placeholder-gray-400"
               placeholder="johndoe123"
-              required
             />
             <span id="usernameExists" className="ml-2 text-[12px] font-bold  ">
-             
-              {available ? <span className='text-green-400'> ✅available </span> 
-              : <span className="text-red-500">❌taken</span>}
+              {available ? (
+                <span className="text-green-400"> ✅available </span>
+              ) : (
+                <span className="text-red-500">❌taken</span>
+              )}
             </span>
+
+            {errors.username && (
+              <p className="text-red-500 text-sm">
+                🚨 {errors.username.message}
+              </p>
+            )}
+
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -155,6 +168,11 @@ function SignUp() {
                   required
                   {...register("password")}
                 />
+                 {errors.password && (
+                    <p className="text-red-500 text-sm">
+                      🚨 {errors.password.message}
+                    </p>
+                  )}
               </div>
             </div>
             <div>
@@ -169,6 +187,11 @@ function SignUp() {
                   required
                   {...register("confirmPassword")}
                 />
+                 {errors.confirmPassword && (
+                    <p className="text-red-500 text-sm">
+                      🚨 {errors.confirmPassword.message}
+                    </p>
+                  )}
               </div>
             </div>
           </div>
