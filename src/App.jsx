@@ -34,18 +34,16 @@ import OrderDetailsForAdmin from "./pages/admin/Orders/OrderDetails.jsx";
 import UsersAdmin from "./pages/admin/Users/Users.jsx";
 import Category from "./pages/admin/Categories/Category.jsx";
 
-//CONTEXTS
-import { UpdaterCart } from "./pages/user/Cart/components/Items.jsx";
-import { useContext } from "react";
 
 axios.defaults.withCredentials = true;
 
 function App() {
-  const updater = useContext(UpdaterCart);
+ 
 
   return (
     <>
-      <UpdaterCart.Provider value={updater}>
+
+     
         <Router>
           <Routes>
             {/* Home route */}
@@ -156,7 +154,8 @@ function App() {
             
           </Routes>
         </Router>
-      </UpdaterCart.Provider>
+
+      
     </>
   );
 }

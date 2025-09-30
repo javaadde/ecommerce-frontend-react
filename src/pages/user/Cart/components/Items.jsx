@@ -1,69 +1,12 @@
-import { useEffect, useState } from "react";
-import axios from "../../../../axios";
-import showNotification from "../../../../notification.mjs";
-import { createContext } from "react";
-
-export const UpdaterCart = createContext();
+import useCart from "../../hooks/useCart";
 
 function Items() {
-  let [update, setUpdate] = useState(0);
-  const [cartItems, setCartItems] = useState([]);
 
-  useEffect(() => {
-    const fetchCart = async () => {
-      axios.get("/cart").then((res) => {
-        const items = res.data.items;
-        setCartItems(items);
-      });
-    };
-
-    fetchCart();
-  }, [update]);
-
-  const increaseItemQty = (id) => {
-    axios
-      .patch(`/cart/quantity/increase?id=${id}`)
-      .then((res) => {
-        const problem = res.data.problem;
-        const message = res.data.message;
-        if (problem) {
-          showNotification(message);
-        }
-        setUpdate((update = update + 1));
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const decreaseItemQty = (id) => {
-    axios
-      .patch(`/cart/quantity/decrease?id=${id}`)
-      .then((res) => {
-        const problem = res.data.problem;
-        const message = res.data.message;
-        if (problem) {
-          showNotification(message);
-        }
-        setUpdate((update = update + 1));
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const deleteCartItem = (id) => {
-    axios
-      .delete(`/cart/delete/${id}`)
-      .then((res) => {
-        console.log(res);
-        const message = res.data.message;
-        setUpdate((update = update + 1));
-      })
-      .catch((err) => console.log(err));
-  };
-
-  useEffect(() => {}, [update]);
+  const {cartItems,increaseItemQty,decreaseItemQty,deleteCartItem} = useCart()
 
   return (
     <>
-    <UpdaterCart.Provider value={update}> </UpdaterCart.Provider>
+  
       {cartItems.map((item, index) => (
         <div
           key={index}

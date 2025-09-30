@@ -1,25 +1,12 @@
-import axios from "../../../../axios";
-import showNotification from "../../../../notification.mjs";
-
+import useCart from "../../hooks/useCart";
 
 
 function Pro(props){
 
     const product_id = props.proId;
+    const {addToCart} = useCart()
 
-const addToCart = ()=>{
- 
-    axios.patch(`/cart/add/${product_id}`)
-    .then( (res) => {
-      const message = res.data.message;
-       showNotification(message);
-    })
-    .catch( (err) =>{
-        console.log(err);
-        
-    })
-  
-}
+
 
     return(
         <>
@@ -45,7 +32,7 @@ const addToCart = ()=>{
                                 <span>{props.price}</span>
                                 <button 
                                  value={props.proId}
-                                  onClick={addToCart}
+                                  onClick={()=>{addToCart(product_id)}}
                                  className="hover:text-blue-500 text-2xl">
                                     <i className="fa-solid fa-cart-plus"></i>
                                 </button>

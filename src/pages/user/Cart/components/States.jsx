@@ -1,10 +1,10 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "../../../../axios";
-import { data, Link } from "react-router-dom";
-import { UpdaterCart } from "./Items";
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import useCart from "../../hooks/useCart";
 
 function States() {
   // form (address) schema
@@ -16,22 +16,22 @@ function States() {
 
   // ==================================
 
-  const [total, setTotal] = useState(0);
-  let update = useContext(UpdaterCart);
+   const {total} = useCart()
+   
+   useEffect(()=>{
+    console.log(total);
 
-  useEffect(() => {
-    axios.get("/cart").then((res) => {
-      const total_amount = res.data.subtotal;
-      setTotal(total_amount);
-    });
-    console.log(update);
-  }, [update]);
+   },[total])
 
   function proceedToCheckout() {
-    console.log("works");
-
+    
     const popup = document.getElementById("paymentDiv");
     popup.classList.remove("hidden");
+  }
+
+  function cancelPayment(){
+     const popup = document.getElementById("paymentDiv");
+    popup.classList.add("hidden");
   }
 
   function proceedToPay(data) {
@@ -133,6 +133,7 @@ function States() {
         </div>
       </div>
 
+
       {/* <!-- first modal  for delivery details--> */}
       <section
         className="hidden absolute left-auto lg:left-[10%] xl:left-[20%] top-0  items-center justify-center p-9 font-comfortaa"
@@ -140,7 +141,9 @@ function States() {
       >
         {/* <!-- Delivery Form --> */}
         <div className="lg:col-span-2">
-          <button className="absolute text-2xl right-12 top-12 w-10 h-10 rounded-full bg-black text-white">
+          <button 
+          onClick={cancelPayment}
+          className="absolute cursor-pointer text-2xl right-12 top-12 w-10 h-10 rounded-full bg-black text-white">
             x
           </button>
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
@@ -326,6 +329,7 @@ function States() {
           </div>
         </div>
       </section>
+
 
       <div
         id="modalOverlay"

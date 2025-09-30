@@ -6,6 +6,7 @@ import States from "./States";
 
 function Main() {
   const [isEmpty, setIsEmpty] = useState();
+  
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -56,9 +57,14 @@ function Main() {
       <div className="grid lg:grid-cols-2">
         {/* ITEMS CONTAINER */}
         <div className="p-3">
-          <Items />
+        
+          <Items>
+          </Items>
         </div>
-        <States />
+        <States>
+        </States>
+
+         
       </div>
     </>
   );
