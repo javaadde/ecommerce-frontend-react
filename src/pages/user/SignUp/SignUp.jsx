@@ -40,16 +40,23 @@ function SignUp() {
   });
 
   const postData = (data) => {
-    axios.post("/signup", data).then((data) => {
-      if (data.status !== 200) {
-        showNotification("please ensure that everithing filled properly");
-      }
-      navigate("/");
-    });
 
+    axios.post("/signup", data).then((res) => {
+      console.log(res);
+      if(res.data.signed){
+        navigate("/");
+      }
+      else{
+        showNotification("sorry please check the user name is available")
+        navigate("/signUp")
+      }
+    }).catch((err) => {
+       console.log(err);
+    })
+    
     console.log(data);
   };
-
+  
   function fetchUserExists(value) {
     const obj = {
       name: value,
@@ -83,8 +90,7 @@ function SignUp() {
 
         <form
           className="space-y-6 font-comfortaa"
-          action="signup"
-          method="POST"
+          onSubmit={handleSubmit(postData)}
         >
           {/* <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -197,7 +203,7 @@ function SignUp() {
           </div>
 
           <button
-            onClick={handleSubmit(postData)}
+            
             type="submit"
             className="w-full bg-black text-white py-3 px-4 rounded-lg font-medium hover:bg-dark-gray focus:ring-2 focus:ring-off-black focus:ring-offset-2 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]"
           >

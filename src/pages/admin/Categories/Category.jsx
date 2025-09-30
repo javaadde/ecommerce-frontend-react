@@ -21,18 +21,26 @@ function Category() {
         console.log(err);
       });
 
-    axios
-      .get("/products")
-      .then((res) => {
-        setProducts(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
 
-    axios.get(`/products/${category}`).then((res) => {
-      setProducts(res.data);
-    });
+      if(category === ""){
+
+        axios
+          .get("/products")
+          .then((res) => {
+            setProducts(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+
+      else{
+        axios.get(`/products/${category}`).then((res) => {
+          setProducts(res.data);
+        });
+      }
+      
+
   }, [category, update]);
 
   const deleteCategory = (id) => {
@@ -71,6 +79,7 @@ function Category() {
     showNotification(message);
     setUpdate(update + 1);
   };
+
 
   return (
     <>

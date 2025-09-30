@@ -142,6 +142,8 @@ function Body() {
   });
 
   const editProduct = (data) => {
+    document.getElementById("loading").classList.remove("hidden");
+
     console.log(data);
 
     const id = document.getElementById("editModalProductId").value;
@@ -158,6 +160,7 @@ function Body() {
       setTimeout(() => {
         setUpdate(update - 1);
       }, 200);
+      document.getElementById("loading").classList.add("hidden");
     });
   };
 
@@ -263,8 +266,8 @@ function Body() {
               </div>
             </div>
 
-            <div className="flex gap-5">
-              <div className="flex flex-col w-1/2">
+            <div className="flex justify-between w-full gap-5">
+              {/* <div className="flex flex-col w-1/2">
                 <label className="block text-sm font-semibold text-gray-500 mb-2">
                   Upload Image
                 </label>
@@ -280,6 +283,18 @@ function Body() {
                     🚨 {errors.image.message}
                   </p>
                 )}
+              </div> */}
+              <div class="flex flex-col w-1/2 max-w-xs  gap-1.5">
+                <label class="text-sm text-gray-500 font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                  Picture
+                </label>
+                <input
+                  id="picture"
+                  type="file"
+                  class="flex h-15 w-full rounded-md border border-gray-300 bg-white px-5 py-3 text-sm text-gray-600
+                      file:border-0 file:bg-gray-100 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-gray-700
+                    hover:file:bg-gray-200 hover:file:cursor-pointer transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-black focus:border-white"
+                />
               </div>
 
               <div className="flex justify-end w-1/2 pt-4">
@@ -292,7 +307,6 @@ function Body() {
                 </button>
               </div>
             </div>
-
           </form>
         </div>
 
@@ -439,7 +453,7 @@ function Body() {
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-semibold text-gray-500 mb-2">
-                  Product Name
+                  Product ID
                 </label>
                 <input
                   type="text"

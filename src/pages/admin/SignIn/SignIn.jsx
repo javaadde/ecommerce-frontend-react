@@ -35,7 +35,7 @@ function SignInAdmin() {
        
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-black mb-2 font-michroma">
-            Wellcome Back
+            Wellcome Admin
           </h1>
           <p className="text-gray-600 mt-6 font-michroma">
             Please sign in to your account
