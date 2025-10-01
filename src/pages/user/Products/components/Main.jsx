@@ -45,6 +45,15 @@ function Main() {
     fetchByCat();
   }, [category]);
 
+  const showSearchResult = (value) => {
+    
+    axios.post(`/products/search?name=${value}`)
+    .then((res)=>{
+      setProducts(res.data)
+    })
+    .catch((err) => console.log(err))
+  }
+
   return (
     <>
       <div
@@ -53,20 +62,31 @@ function Main() {
       >
         {/* search by text */}
 
-        <div className="w-[35%] lg:w-1/2 h-full flex lg:justify-start flex-row lg:ml-15 justify-center items-center">
-      
-        <Link to="/">
-        <button className="text-2xl cursor-pointer px-4 lg:hidden">
-            <i className="fa-solid fa-house"></i>
-        </button>
-        </Link>
+        <div className="w-[50%] lg:w-1/2 h-full flex lg:justify-start flex-row lg:ml-15 justify-center items-center">
+          <Link to="/">
+            <button className="text-2xl cursor-pointer px-4 lg:hidden">
+              <i className="fa-solid fa-house"></i>
+            </button>
+          </Link>
 
-        <Link to="/">
-        <div className="text-xl cursor-pointer px-4 hover:scale-105 hover:font-extrabold hidden lg:flex">
-            <h1 className="text-black">Home</h1>
-        </div>
-        </Link>
+          <Link to="/">
+            <div className="text-xl cursor-pointer px-4 hover:scale-105 hover:font-extrabold hidden lg:flex">
+              <h1 className="text-black">Home</h1>
+            </div>
+          </Link>
 
+          <div className="ml-28 py-3 rounded-l-2xl px-4 text-xl bg-gray-300">
+            <i className="fa-solid fa-magnifying-glass"></i>
+          </div>
+
+          <div className="felx flex-row  items-center justify-center">
+            <input
+              onChange={(e)=>{showSearchResult(e.target.value)}}
+              type="text"
+              className="py-3 px-5 text-xl bg-gray-300 rounded-r-xl outline-0"
+              placeholder="Search"
+            />
+          </div>
         </div>
 
         {/* search by categories */}
@@ -93,7 +113,6 @@ function Main() {
           </div>
         </div>
       </div>
-
       <div className="h-full px-8 py-12 flex flex-wrap gap-8 items-center justify-center">
         {products.map((pro, index) => (
           <Pro

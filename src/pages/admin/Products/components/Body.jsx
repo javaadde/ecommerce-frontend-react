@@ -164,6 +164,17 @@ function Body() {
     });
   };
 
+
+  
+    const showSearchResult = (value) => {
+      
+      axios.post(`/products/search?name=${value}`)
+      .then((res)=>{
+        setProducts(res.data)
+      })
+      .catch((err) => console.log(err))
+    }
+
   return (
     <>
       <div id="loading" className="hidden fixed top-0 h-screen w-full">
@@ -284,14 +295,15 @@ function Body() {
                   </p>
                 )}
               </div> */}
-              <div class="flex flex-col w-1/2 max-w-xs  gap-1.5">
-                <label class="text-sm text-gray-500 font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              <div className="flex flex-col w-1/2 max-w-xs  gap-1.5">
+                <label className="text-sm text-gray-500 font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                   Picture
                 </label>
                 <input
+                  {...register("image")}
                   id="picture"
                   type="file"
-                  class="flex h-15 w-full rounded-md border border-gray-300 bg-white px-5 py-3 text-sm text-gray-600
+                  className="flex h-15 w-full rounded-md border border-gray-300 bg-white px-5 py-3 text-sm text-gray-600
                       file:border-0 file:bg-gray-100 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-gray-700
                     hover:file:bg-gray-200 hover:file:cursor-pointer transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-black focus:border-white"
                 />
@@ -314,52 +326,24 @@ function Body() {
 
         <div>
           <div className="font-comfortaa font-bold text-2xl mt-20 p-5">
-            <h1> Search by id or category :</h1>
+            <h1> Search Products :</h1>
           </div>
 
-          {/* <div className="flex gap-6 p-[2%]">
-            <div className="w-[50%] bg-white rounded-xl shadow-sm border-[1px] border-gray-800 p-6 mb-8 flex flex-row justify-between items-center py-8 px-20 ">
-              <label for="">Product Id</label>
-              <input
-                id="pro_id"
-                className="px-4 py-2 rounded-full border-2 border-black ml-5 "
-                type="text"
-                placeholder="type the product_id"
-                value=" id "
-              />
-              <button
-                onclick="SearchId()"
-                className="w-11 h-11 rounded-full border-2 border-black text-black"
-              >
-                <i className="fa-solid fa-magnifying-glass"></i>
-              </button>
-            </div>
+        <div className="w-full flex py-12 justify-center">
+           <div className="py-3 rounded-l-2xl px-4 text-xl bg-gray-300">
+            <i className="fa-solid fa-magnifying-glass"></i>
+          </div>
 
-            <div className="w-[45%] bg-white rounded-xl shadow-sm border-[1px] border-gray-800 p-6 mb-8 flex flex-row gap-4 py-8 justify-center px-20 ">
-              <select
-                onChange={(e) => {
-                  setCategory(e.target.value);
-                }}
-                id="category"
-                name=" category "
-                className="p-2 px-6 rounded-full border-black border-2"
-              >
-                <option value="">All</option>
-                {allCategory.map((catg, index) => (
-                  <option key={index} value={catg._id}>
-                    {catg._id}
-                  </option>
-                ))}
-              </select>
+          <div className="felx w-1/2 flex-row items-center justify-center">
+            <input
+              onChange={(e)=>{showSearchResult(e.target.value)}}
+              type="text"
+              className="py-3 px-5 w-full text-xl bg-gray-300 rounded-r-xl outline-0"
+              placeholder="Search"
+            />
+          </div>
+        </div>
 
-              <button
-                onclick="SearchCategory()"
-                className="w-11 h-11 rounded-full border-2 border-black text-black"
-              >
-                <i className="fa-solid fa-magnifying-glass"></i>
-              </button>
-            </div>
-          </div> */}
         </div>
 
         {/* <!-- Products List --> */}
